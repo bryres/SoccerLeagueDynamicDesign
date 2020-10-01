@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/standings.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <title>Summerville Rec Soccer - Standings</title>
+</head>
+
+
+<body>
+
+<header>
+<nav>
+    <div class="nav-wrapper">
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul class="left hide-on-med-and-down">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="schedule.html">Schedule</a></li>
+            <li><a href="standings.html">Standings</a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+    </div>
+</nav>
+
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="schedule.html">Schedule</a></li>
+    <li><a href="standings.html">Standings</a></li>
+    <li><a href="login.html">Login</a></li>
+</ul>
+</header>
+
+<main>
+<div class="container">
+    <h2 align="center">Standings</h2>
+
+    <ul class="collapsible">
+        <li>
+            <div class="collapsible-header"><i class="material-icons">chevron_right</i>Clovers</div>
+            <div class="collapsible-body">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Team</th>
+                        <th>Record</th>
+                        <th>Ranking Points</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td class="blue-text clickable" onclick="location='team.html'">Bull Dogs</td>
+                        <td>2W-0L-0T</td>
+                        <td>6</td>
+                    </tr>
+                    <tr>
+                        <td class="blue-text clickable" onclick="location='team.html'">Cubs</td>
+                        <td>1W-0L-1T</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td class="blue-text clickable" onclick="location='team.html'">Rockets</td>
+                        <td>1W-1L-0T</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td class="blue-text clickable" onclick="location='team.html'">Panthers</td>
+                        <td>0W-2L-0T</td>
+                        <td>0</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><i class="material-icons">chevron_right</i>Dragons</div>
+            <div class="collapsible-body">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Team</th>
+                        <th>Record</th>
+                        <th>Ranking Points</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td class="blue-text clickable" onclick="location='team.html'">Rutt's Hut</td>
+                        <td>0W-0L-0T</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td class="blue-text clickable" onclick="location='team.html'">Biggies</td>
+                        <td>0W-0L-0T</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td class="blue-text clickable" onclick="location='team.html'">Steve's Autobody</td>
+                        <td>0-0L-0T</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td class="blue-text clickable" onclick="location='team.html'">Anne's Deli</td>
+                        <td>0W-0L-0T</td>
+                        <td>0</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ul>
+
+
+</div>
+</main>
+
+<footer class="page-footer">
+        <div class="row">
+            <div class="col s5"><h6>Summerville Recreation Department</h6></div>
+            <div class="col s2"><h6 style="text-align: center">434-232-7676</h6></div>
+            <div class="col s5"><h6 style="text-align: right">rec@summerville.org</h6></div>
+        </div>
+</footer>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.sidenav');
+        var instances = M.Sidenav.init(elems, {});
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.collapsible');
+        var instances = M.Collapsible.init(elems, {});
+    });
+</script>
+
+</body>
+
+</html>
+

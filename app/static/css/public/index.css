@@ -1,0 +1,6 @@
+img{
+    max-width: 100%; /* Sets width to the size of the containing div. */
+    max-height: 100%;
+    display: block; /* remove extra space below image */
+}
+

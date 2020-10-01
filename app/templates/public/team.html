@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/team.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <title>Summerville Rec Soccer - Schedule</title>
+</head>
+
+
+<body>
+
+<header>
+<nav>
+    <div class="nav-wrapper">
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul class="left hide-on-med-and-down">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="schedule.html">Schedule</a></li>
+            <li><a href="standings.html">Standings</a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+    </div>
+</nav>
+
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="schedule.html">Schedule</a></li>
+    <li><a href="standings.html">Standings</a></li>
+    <li><a href="login.html">Login</a></li>
+</ul>
+</header>
+
+<main>
+<div class="container">
+    <h2 align="center">Cubs</h2>
+
+    <div class="row" style="margin-top: 2em;">
+        <div class="col s9 offset-s3 large_font">League: <span class="table_data">Clovers</span></div>
+    </div>
+    <div class="row">
+        <div class="col s9  offset-s3 large_font">Coach: <span class="table_data">Erica Kim</span> &nbsp &nbsp <a class="small_font" href="mailto:ericakim@summerville.org">ericakim@summerville.org</a></div>
+    </div>
+    <div class="row">
+        <div class="col s9  offset-s3 large_font">Record: <span class="table_data">1W-0L-1T</span></div>
+    </div>
+
+
+
+    <table class="striped centered" style="margin-top: 3em; border: solid 1px">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Opponent</th>
+            <th>Field</th>
+            <th>Result</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td>Apr 25 10:30 AM (Away)</td>
+            <td>Rockets</td>
+            <td>High School - West</td>
+            <td>1-1 (T)</td>
+        </tr>
+        <tr>
+            <td>May 2 8:30 AM (Home)</td>
+            <td>Panthers</td>
+            <td>High School - East</td>
+            <td>3-2 (W)</td>
+        </tr>
+        <tr>
+            <td>May 9 12:30 PM (Home)</td>
+            <td>Bull Dogs</td>
+            <td>High School - East</td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</main>
+
+<footer class="page-footer">
+        <div class="row">
+            <div class="col s5"><h6>Summerville Recreation Department</h6></div>
+            <div class="col s2"><h6 style="text-align: center">434-232-7676</h6></div>
+            <div class="col s5"><h6 style="text-align: right">rec@summerville.org</h6></div>
+        </div>
+</footer>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.sidenav');
+        var instances = M.Sidenav.init(elems, {});
+    });
+</script>
+
+</body>
+
+</html>
+
