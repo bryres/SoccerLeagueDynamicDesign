@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col s9  offset-s3 large_font">Record: <span class="table_data">1W-0L-1T</span></div>
+        <div class="col s9  offset-s3 large_font">Record: <span class="table_data">{{results_str}}</span></div>
     </div>
 
 
@@ -42,9 +42,12 @@
             {% for game in team_schedule %}
             <tr>
                 <td>{{game.game_date}} {{ game.game_time }} - {{game.HomeAway}}</td>
-                <td>{{ game.opponent_team_name }}</td>
+                <td class="blue-text clickable" onclick="location='team?team_id={{game.opponent_team_id}}'">{{game.opponent_team_name}}</td>
                 <td>{{ game.field_name }}</td>
-                <td>{{ game.score }} ({{ game.result }})</td>
+                <td>{{ game.score }}
+                    {% if game.result|length %}
+                        ({{ game.result }})
+                    {%  endif %}
             </tr>
             {% endfor %}
 

@@ -34,15 +34,29 @@ def get_team_info(team_id):
 
 def get_team_schedule(team_id):
     return query(statement='''select 'Home' as HomeAway, opp.name as opponent_team_name,  opp.team_id as opponent_team_id, 
-                           CONCAT(g.home_score,'-',g.away_score) as score,       
-                           IF(ISNULL(g.home_score),' ', IF(g.home_score>g.away_score, 'W', IF(g.home_score<g.away_score, 'L', ' '))) as result,          
-                            DATE_FORMAT(game_dt, '%%b %%e (%%a)') as game_date, DATE_FORMAT(game_dt, '%%l:%%i %%p') as game_time,
+                           IF(ISNULL(g.away_score),'',CONCAT(g.home_score,'-',g.away_score)) as score,       
+                           IF(ISNULL(g.home_score),'', IF(g.home_score>g.away_score, 'W', IF(g.home_score<g.away_score, 'L', 'T'))) as result,          
+                            DATE_FORMAT(game_dt, '%%b %%e (%%a)') as game_date, DATE_FORMAT(game_dt, '%%l:%%i %%p') as game_time, game_dt, 
                            l.league_name, f.field_name
                            from league l, game g, team opp, field f                                    
                            where g.away_team_id = opp.team_id
                            and g.home_team_id = %s
                             and opp.league_id = l.league_id                           
                            and g.field_id = f.field_id
+                           
+                           UNION
+                           
+                           select 'Away' as HomeAway, opp.name as opponent_team_name,  opp.team_id as opponent_team_id, 
+                           IF(ISNULL(g.away_score),'',CONCAT(g.away_score,'-',g.home_score)) as score,       
+                           IF(ISNULL(g.away_score),'', IF(g.away_score>g.home_score, 'W', IF(g.away_score<g.home_score, 'L', 'T'))) as result,          
+                            DATE_FORMAT(game_dt, '%%b %%e (%%a)') as game_date, DATE_FORMAT(game_dt, '%%l:%%i %%p') as game_time, game_dt,
+                           l.league_name, f.field_name
+                           from league l, game g, team opp, field f                                    
+                           where g.home_team_id = opp.team_id
+                           and g.away_team_id = %s
+                            and opp.league_id = l.league_id                           
+                           and g.field_id = f.field_id
+                                                      
                            order by game_dt, field_name''',
-                    vars=[team_id],
+                    vars=[team_id, team_id],
                     dictResults=True)
