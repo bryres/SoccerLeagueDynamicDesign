@@ -35,7 +35,7 @@ def get_team_info(team_id):
 def get_team_schedule(team_id):
     return query(statement='''select 'Home' as HomeAway, opp.name as opponent_team_name,  opp.team_id as opponent_team_id, 
                            IF(ISNULL(g.away_score),'',CONCAT(g.home_score,'-',g.away_score)) as score,       
-                           IF(ISNULL(g.home_score),'', IF(g.home_score>g.away_score, 'W', IF(g.home_score<g.away_score, 'L', 'T'))) as result,          
+                           home_team_result as result,          
                             DATE_FORMAT(game_dt, '%%b %%e (%%a)') as game_date, DATE_FORMAT(game_dt, '%%l:%%i %%p') as game_time, game_dt, 
                            l.league_name, f.field_name
                            from league l, game g, team opp, field f                                    
@@ -48,7 +48,7 @@ def get_team_schedule(team_id):
                            
                            select 'Away' as HomeAway, opp.name as opponent_team_name,  opp.team_id as opponent_team_id, 
                            IF(ISNULL(g.away_score),'',CONCAT(g.away_score,'-',g.home_score)) as score,       
-                           IF(ISNULL(g.away_score),'', IF(g.away_score>g.home_score, 'W', IF(g.away_score<g.home_score, 'L', 'T'))) as result,          
+                           away_team_result as result,          
                             DATE_FORMAT(game_dt, '%%b %%e (%%a)') as game_date, DATE_FORMAT(game_dt, '%%l:%%i %%p') as game_time, game_dt,
                            l.league_name, f.field_name
                            from league l, game g, team opp, field f                                    
@@ -60,3 +60,11 @@ def get_team_schedule(team_id):
                            order by game_dt, field_name''',
                     vars=[team_id, team_id],
                     dictResults=True)
+
+def get_league_rankings():
+    return query(statement='''select l.league_name, l.league_id, t.team_id, t.name as team_name, 
+                                W, L, T, (3*W + 1*T) as points 
+                           from league l, team t
+                           where l.league_id = t.league_id 
+                           order by league_name, points desc''',
+                 dictResults=True)

@@ -12,81 +12,32 @@
     <h2 align="center">Standings</h2>
 
     <ul class="collapsible">
-        <li>
-            <div class="collapsible-header"><i class="material-icons">chevron_right</i>Clovers</div>
-            <div class="collapsible-body">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Team</th>
-                        <th>Record</th>
-                        <th>Ranking Points</th>
-                    </tr>
-                    </thead>
+        {% for league in rankings %}
+            <li>
+                <div class="collapsible-header"><i class="material-icons">chevron_right</i>{{league.league_name}}</div>
+                <div class="collapsible-body">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Team</th>
+                            <th>Record</th>
+                            <th>Ranking Points</th>
+                        </tr>
+                        </thead>
 
-                    <tbody>
+                        <tbody>
+            {% for team in league.team_list %}
                     <tr>
-                        <td class="blue-text clickable" onclick="location='team.html'">Bull Dogs</td>
-                        <td>2W-0L-0T</td>
-                        <td>6</td>
+                        <td class="blue-text clickable" onclick="location='team?team_id={{team.team_id}}'">{{ team.team_name }}</td>
+                        <td>{{ team.W }}W-{{ team.L }}L-{{ team.T }}T</td>
+                        <td>{{ team.points }}</td>
                     </tr>
-                    <tr>
-                        <td class="blue-text clickable" onclick="location='team.html'">Cubs</td>
-                        <td>1W-0L-1T</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td class="blue-text clickable" onclick="location='team.html'">Rockets</td>
-                        <td>1W-1L-0T</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td class="blue-text clickable" onclick="location='team.html'">Panthers</td>
-                        <td>0W-2L-0T</td>
-                        <td>0</td>
-                    </tr>
-                    </tbody>
-                </table>
-
-            </div>
-        </li>
-        <li>
-            <div class="collapsible-header"><i class="material-icons">chevron_right</i>Dragons</div>
-            <div class="collapsible-body">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Team</th>
-                        <th>Record</th>
-                        <th>Ranking Points</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    <tr>
-                        <td class="blue-text clickable" onclick="location='team.html'">Rutt's Hut</td>
-                        <td>0W-0L-0T</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td class="blue-text clickable" onclick="location='team.html'">Biggies</td>
-                        <td>0W-0L-0T</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td class="blue-text clickable" onclick="location='team.html'">Steve's Autobody</td>
-                        <td>0-0L-0T</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td class="blue-text clickable" onclick="location='team.html'">Anne's Deli</td>
-                        <td>0W-0L-0T</td>
-                        <td>0</td>
-                    </tr>
-                    </tbody>
+            {%  endfor %}
+                        </tbody>
                 </table>
             </div>
         </li>
+        {% endfor %}
     </ul>
 </div>
 {% endblock %}

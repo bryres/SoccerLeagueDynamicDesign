@@ -45,7 +45,7 @@
                 <td class="blue-text clickable" onclick="location='team?team_id={{game.opponent_team_id}}'">{{game.opponent_team_name}}</td>
                 <td>{{ game.field_name }}</td>
                 <td>{{ game.score }}
-                    {% if game.result|length %}
+                    {% if game.result is not none %}
                         ({{ game.result }})
                     {%  endif %}
             </tr>
