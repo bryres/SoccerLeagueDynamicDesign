@@ -3,10 +3,14 @@ import pymysql
 from app import mysql
 from config import Config
 
-# Executes the statemet and then returns the result
-# Statement - SQL Query
-# Vars - List of variables in Query to prevent SQL Injection
+
 def query(db=Config.MYSQL_DATABASE_DB, statement="required", vars="", dictResults=False):
+    """
+    Executes the statement and then returns the result as a list
+    Statement - SQL Query
+    Vars - List of variables in Query to prevent SQL Injection
+    """
+
     # not using variable dictResults for now.  Always getting dictResults
     cur = get_connection().cursor()
     use_db(cur, db)
@@ -26,6 +30,12 @@ def query(db=Config.MYSQL_DATABASE_DB, statement="required", vars="", dictResult
 
 # only searches for one return option/value
 def query_one(db=Config.MYSQL_DATABASE_DB, statement="required", vars="", dictResults=False):
+    """
+    Executes the statement and then returns the the first row of the result
+    Statement - SQL Query
+    Vars - List of variables in Query to prevent SQL Injection
+    """
+
     # not using variable dictResults for now.  Always getting dictResults
     cur = get_connection().cursor()
     use_db(cur, db)

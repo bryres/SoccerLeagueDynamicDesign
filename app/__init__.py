@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for
+from flask import Flask
 from flaskext.mysql import MySQL
 
 from config import Config
@@ -11,8 +11,4 @@ mysql = MySQL(app)
 from app.public import public_mod
 app.register_blueprint(public_mod)
 
-@app.route('/')
-def index():
-    return redirect(url_for('public.index'))
-
-#from errors import app
+from app.errors import error_mod
