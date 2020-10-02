@@ -4,8 +4,8 @@
 
 {% block content %}
 <div class="container">
-    <h3>Schedule: May 2-8</h3>
-    <h6><a href="">Prior Week</a>&nbsp&nbsp&nbsp&nbsp<a href="">Next Week</a></h6>
+    <h3>Schedule: {{ date_range }}</h3>
+    <h6><a href="./schedule?start_date={{prior_week}}">Prior Week</a>&nbsp&nbsp&nbsp&nbsp<a href="./schedule?start_date={{next_week}}">Next Week</a></h6>
     <table>
         <thead>
         <tr>
@@ -20,51 +20,23 @@
         </thead>
 
         <tbody>
-        <tr>
-            <td>Clovers</td>
-            <td class="blue-text clickable" onclick="location='team.html'">Cubs</td>
-            <td class="blue-text clickable" onclick="location='team.html'">Panthers</td>
-            <td>High School - East</td>
-            <td>May 2 (Sat)</td>
-            <td>08:30 AM</td>
-            <td>3-2</td>
-        </tr>
-        <tr>
-            <td>Clovers</td>
-            <td class="blue-text clickable" onclick="location='team.html'">Rockets</td>
-            <td class="blue-text clickable" onclick="location='team.html'">Bull Dogs</td>
-            <td>High School - West</td>
-            <td>May 2 (Sat)</td>
-            <td>08:30 AM</td>
-            <td>1-2</td>
-        </tr>
-        <tr>
-            <td>Clovers</td>
-            <td class="blue-text clickable" onclick="location='team.html'">Labradors</td>
-            <td class="blue-text clickable" onclick="location='team.html'">Lions</td>
-            <td>High School - East</td>
-            <td>May 2 (Sat)</td>
-            <td>10:30 AM</td>
-            <td>2-0</td>
-        </tr>
-        <tr>
-            <td>Dragons</td>
-            <td class="blue-text clickable" onclick="location='team.html'">Rutt's Hut</td>
-            <td class="blue-text clickable" onclick="location='team.html'">Biggies</td>
-            <td>High School - East</td>
-            <td>May 3 (Sat)</td>
-            <td>8:30 AM</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>Dragons</td>
-            <td class="blue-text clickable" onclick="location='team.html'">Steve's Autobody</td>
-            <td class="blue-text clickable" onclick="location='team.html'">Anne's Deli</td>
-            <td>High School - West</td>
-            <td>May 3 (Sat)</td>
-            <td>8:30 AM</td>
-            <td></td>
-        </tr>
+
+            {% for game in schedule_data %}
+                <tr>
+                    <td>{{game.league_name}}</td>
+                    <td class="blue-text clickable" onclick="location='team?team_id={{game.home_team_id}}'">{{game.home_team_name}}</td>
+                    <td class="blue-text clickable" onclick="location='team?team_id={{game.away_team_id}}'">{{game.away_team_name}}</td>
+                    <td>{{game.field_name}}</td>
+                    <td>{{game.game_date}}</td>
+                    <td>{{game.game_time}}</td>
+                    <td>
+                        {% if game.home_score is not none %}
+                            {{game.home_score}}-{{game.away_score}}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+
         </tbody>
     </table>
 </div>

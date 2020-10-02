@@ -7,7 +7,7 @@ from config import Config
 # Statement - SQL Query
 # Vars - List of variables in Query to prevent SQL Injection
 def query(db=Config.MYSQL_DATABASE_DB, statement="required", vars="", dictResults=False):
-    # not using dictResults for now.  Always getting dictResults
+    # not using variable dictResults for now.  Always getting dictResults
     cur = get_connection().cursor()
     use_db(cur, db)
 
@@ -25,8 +25,9 @@ def query(db=Config.MYSQL_DATABASE_DB, statement="required", vars="", dictResult
 
 
 # only searches for one return option/value
-def query_one(db=Config.MYSQL_DATABASE_DB, statement="required", vars=""):
-    cur = mysql.get_db().cursor()
+def query_one(db=Config.MYSQL_DATABASE_DB, statement="required", vars="", dictResults=False):
+    # not using variable dictResults for now.  Always getting dictResults
+    cur = get_connection().cursor()
     use_db(cur, db)
 
     if vars:

@@ -17,7 +17,7 @@ set FLASK_DEBUG=True
 flask run
 
 ## Mac Instructions
-export FLASK_APP=bca_web.py
+export FLASK_APP=soccer.py
 export FLASK_DEBUG=True
 flask run
 
