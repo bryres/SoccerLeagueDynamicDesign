@@ -4,18 +4,21 @@
 
 {% block content %}
     <form id="add_modify_game" method="post">
-    <input type="hidden" name="game_id" value={{ game.game_id }}>
+    <input type="hidden" name="game_id" id="game_id">
 
         <div id="box" class="container">
             <div class="row">
                 <div class="col s12 center-align">
-                    <h3 class="title">Modify Game</h3>
+                    <h3 class="title">{{ mode }} Game</h3>
                 </div>
             </div>
 
             <div class="row">
                 <div class="input-field col s6">
                     <select id="home_team_id" name="home_team_id" required>
+                        {% if mode == 'Add' %}
+                            <option value="" disabled selected>Select a team</option>
+                        {% endif %}
                         {% for team in teams %}
                             <option value="{{ team.team_id }}">{{team.league_name}}: {{team.team_name}}</option>
                         {% endfor %}
@@ -25,6 +28,9 @@
 
                 <div class="input-field col s6">
                     <select id="away_team_id" name="away_team_id" required>
+                        {% if mode == 'Add' %}
+                            <option value="" disabled selected>Select a team</option>
+                        {% endif %}
                         {% for team in teams %}
                             <option value="{{ team.team_id }}">{{team.league_name}}: {{team.team_name}}</option>
                         {% endfor %}
@@ -71,7 +77,7 @@
             </div>
 
             <div class="button_wrapper">
-                <button class="submit waves-effect waves-light btn" type="submit" name="choice" value="Add">Add</button>
+                <button class="submit waves-effect waves-light btn" type="submit" name="choice" value="{{ mode }}">{{ mode }}</button>
             </div>
 
         </div>
@@ -101,12 +107,26 @@
         });
     });
 
-    document.getElementById("home_team_id").value = {{game.home_team_id}};
-    document.getElementById("away_team_id").value = {{game.away_team_id}};
-    document.getElementById("field_id").value = {{game.field_id}};
-    document.getElementById("game_dt").value = '{{game.game_date}}';
-    document.getElementById("game_time").value = '{{game.game_time}}';
+    {% if mode == 'Modify' %}
+        document.getElementById("game_id").value = {{game.game_id}};
+        document.getElementById("home_team_id").value = {{game.home_team_id}};
+        document.getElementById("away_team_id").value = {{game.away_team_id}};
+        document.getElementById("game_dt").value = '{{game.game_date}}';
+        document.getElementById("game_time").value = '{{game.game_time}}';
 
+        {%  if game.field_id is not none %}
+            document.getElementById("field_id").value = {{game.field_id}};
+        {%  endif %}
+
+        {%  if game.home_score is not none %}
+            document.getElementById("home_score").value = {{game.home_score or "''"}};
+        {%  endif %}
+
+        {%  if game.away_score is not none %}
+            document.getElementById("away_score").value = {{game.away_score or "''"}};
+        {%  endif %}
+
+    {%  endif %}
 
     document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('select');

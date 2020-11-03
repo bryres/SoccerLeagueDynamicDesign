@@ -5,44 +5,28 @@ from flask import render_template, request, redirect, url_for, session
 from app.public import public_mod
 from app.public.schedule.models import *
 
+
 @public_mod.route('/game_add', methods=['GET', 'POST'])
-def add_game_controller():
-
-    # GET -- draw the modify page.
-    if request.method == 'GET':
-        return render_template("schedule/game_add.html", teams=get_teams(), fields=get_fields())
-
-    # POST -- update the game
-    else:
-        home_team_id = request.form['home_team_id']
-        away_team_id = request.form['away_team_id']
-        field_id = request.form['field_id'] or None
-        game_dt = request.form['game_dt']
-        game_time = request.form['game_time']
-        home_score = request.form['home_score'] or None
-        away_score = request.form['away_score'] or None
-
-        # convert from 12 hour clock to 24 hour
-        in_time = datetime.strptime(game_time, "%I:%M %p")
-        game_time = datetime.strftime(in_time, "%H:%M")
-
-        if home_team_id and away_team_id:
-            add_game(home_team_id, away_team_id, field_id, game_dt, game_time, home_score, away_score)
-
-        return redirect(url_for('public.show_schedule_page'))
-
-
-
 @public_mod.route('/game_modify', methods=['GET', 'POST'])
-def modify_game_controller():
-    # GET -- draw the modify page.
-    if request.method == 'GET':
-        game_id = request.args['game_id']
-        return render_template("schedule/game_add_modify.html", mode="modify", game=load_game(game_id), teams=get_teams(), fields=get_fields())
+def add_modify_game_controller():
 
-    # POST -- modify the game
+    # Initially loading the pages
+    if request.method == 'GET':
+        rule = request.url_rule
+
+        if 'game_add' in rule.rule:
+            return render_template("schedule/game_add_modify.html", mode="Add",
+                                   teams=get_teams(), fields=get_fields())
+        else:
+            game_id = request.args['game_id']
+            return render_template("schedule/game_add_modify.html", mode="Modify",
+                                   game=load_game(game_id),
+                                   teams=get_teams(), fields=get_fields())
+
+
+    # Saving the results of the pages
     else:
-        game_id = request.form['game_id']
+        mode = request.form['choice']
         home_team_id = request.form['home_team_id']
         away_team_id = request.form['away_team_id']
         field_id = request.form['field_id'] or None
@@ -55,7 +39,11 @@ def modify_game_controller():
         in_time = datetime.strptime(game_time, "%I:%M %p")
         game_time = datetime.strftime(in_time, "%H:%M")
 
-        modify_game(game_id, home_team_id, away_team_id, field_id, game_dt, game_time, home_score, away_score)
+        if mode == 'Modify':
+            modify_game(request.form['game_id'], home_team_id, away_team_id, field_id, game_dt, game_time, home_score, away_score)
+
+        else:
+            add_game(home_team_id, away_team_id, field_id, game_dt, game_time, home_score, away_score)
 
         return redirect(url_for('public.show_schedule_page'))
 
