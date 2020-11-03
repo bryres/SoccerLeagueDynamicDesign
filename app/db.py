@@ -73,9 +73,12 @@ def insertmany(db=Config.MYSQL_DATABASE_DB, statement="required", data=None):
         log_print("INSERT", db, statement, data)
 
 
-def update(db=Config.MYSQL_DATABASE_DB, statement="required", vars="", display=False):
+def update(db=Config.MYSQL_DATABASE_DB, statement="required", vars=""):
     cur = mysql.get_db().cursor()
     use_db(cur, db)
+
+    if Config.SHOW_QUERIES:
+        log_print("UPDATE", db, statement, vars)
 
     if vars:
         cur.execute(statement, vars)
@@ -84,23 +87,21 @@ def update(db=Config.MYSQL_DATABASE_DB, statement="required", vars="", display=F
 
     cur.connection.commit()
 
-    if display:
-        log_print("UPDATED", db, statement, vars)
 
-
-def delete(db=Config.MYSQL_DATABASE_DB, statement="required", vars="", display=False):
+def delete(db=Config.MYSQL_DATABASE_DB, statement="required", vars=""):
     cur = mysql.get_db().cursor()
     use_db(cur, db)
 
-    if vars:
-        cur.execute(statement, vars)
-    else:
-        cur.execute(statement)
-
-    cur.connection.commit()
-
-    if display:
+    if Config.SHOW_QUERIES:
         log_print("DELETE", db, statement, vars)
+
+    if vars:
+        cur.execute(statement, vars)
+    else:
+        cur.execute(statement)
+
+    cur.connection.commit()
+
 
 def get_connection():
     return pymysql.connect(

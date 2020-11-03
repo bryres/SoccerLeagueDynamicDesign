@@ -18,5 +18,5 @@ def show_team_page():
 
     record = str(results["W"]) + "W-" + str(results["L"]) + "L-" + str(results["T"]) + "T"
 
-    return render_template("public/../../templates/teams/team.html", team_info=team_info, team_schedule=team_schedule, results_str=record)
+    return render_template("teams/team.html", team_info=team_info, team_schedule=team_schedule, results_str=record)
 

@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container">
-    <h3>Schedule: {{ date_range }}</h3>
+    <h3>Schedule: {{ date_range }}  <a class="waves-effect waves-light btn light-blue accent-2" style="float:right" href="game_add">Add Game</a></h3>
     <h6><a href="./schedule?start_date={{prior_week}}">Prior Week</a>&nbsp&nbsp&nbsp&nbsp<a href="./schedule?start_date={{next_week}}">Next Week</a></h6>
     <table>
         <thead>
@@ -16,6 +16,7 @@
             <th>Date</th>
             <th>Time</th>
             <th>Score</th>
+            <th>Actions</th>
         </tr>
         </thead>
 
@@ -33,6 +34,10 @@
                         {% if game.home_score is not none %}
                             {{game.home_score}}-{{game.away_score}}
                         {% endif %}
+                    </td>
+                    <td>
+                        <a href="./game_modify?game_id={{ game.game_id }}"><i class="material-icons">edit</i></a>
+                        <a href="./game_delete?game_id={{ game.game_id }}"><i class="material-icons">delete</i></a>
                     </td>
                 </tr>
             {% endfor %}

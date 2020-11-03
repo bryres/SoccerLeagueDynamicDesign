@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Schedule{% endblock %}
+
+{% block content %}
+    <form id="add_modify_game" method="post">
+    <input type="hidden" name="game_id" value={{ game.game_id }}>
+
+        <div id="box" class="container">
+            <div class="row">
+                <div class="col s12 center-align">
+                    <h3 class="title">Modify Game</h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s6">
+                    <select id="home_team_id" name="home_team_id" required>
+                        {% for team in teams %}
+                            <option value="{{ team.team_id }}">{{team.league_name}}: {{team.team_name}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="home_team_id">Home Team</label>
+                </div>
+
+                <div class="input-field col s6">
+                    <select id="away_team_id" name="away_team_id" required>
+                        {% for team in teams %}
+                            <option value="{{ team.team_id }}">{{team.league_name}}: {{team.team_name}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="away_team_id">Away Team</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <select id="field_id" name="field_id">
+                        <option value="" selected>None Selected</option>
+
+                        {% for field in fields %}
+                            <option value="{{ field.field_id }}">{{field.field_name}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="field_id">Field</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class = "input-field col s6">
+                    <input type="text" id=game_dt name="game_dt" class="datepicker" required>
+                    <label for="game_dt">Date</label>
+                </div>
+
+                <div class="input-field col s6">
+                    <input type="text" id="game_time" name="game_time" class="timepicker" required>
+                    <label for="game_time">Time</label>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="home_score" name="home_score" type="number">
+                    <label for="home_score">Home Score</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="away_score" name="away_score" type="number">
+                    <label for="away_score">Away Score</label>
+                </div>
+            </div>
+
+            <div class="button_wrapper">
+                <button class="submit waves-effect waves-light btn" type="submit" name="choice" value="Add">Add</button>
+            </div>
+
+        </div>
+    </form>
+{% endblock %}
+
+
+{% block footer %}
+    {{ super() }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.datepicker');
+        var instances = M.Datepicker.init(elems, {
+            format: 'yyyy-mm-dd',
+            autoClose: true
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.timepicker');
+        var instances = M.Timepicker.init(elems, {
+            defaultTime: 'now', // Set default time: 'now', '1:30AM', '16:30'
+            fromNow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+            twelveHour: true, // Use AM/PM or 24-hour format
+            autoClose: false, // automatic close timepicker
+        });
+    });
+
+    document.getElementById("home_team_id").value = {{game.home_team_id}};
+    document.getElementById("away_team_id").value = {{game.away_team_id}};
+    document.getElementById("field_id").value = {{game.field_id}};
+    document.getElementById("game_dt").value = '{{game.game_date}}';
+    document.getElementById("game_time").value = '{{game.game_time}}';
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems, {});
+    });
+</script>
+{%  endblock %}

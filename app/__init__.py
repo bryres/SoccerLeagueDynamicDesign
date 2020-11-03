@@ -5,6 +5,7 @@ from config import Config
 
 app = Flask(__name__, static_url_path='/static')
 app.config.from_object(Config)
+app.secret_key = 'soccerSoccersoccer'
 
 mysql = MySQL(app)
 
