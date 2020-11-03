@@ -1,4 +1,4 @@
-from app.db import insert, insertmany, query_one, query, delete, update
+from app.db import execute, query_one, query
 
 
 def get_teams() -> []:
@@ -6,29 +6,31 @@ def get_teams() -> []:
                             from team t, league l
                             where t.league_id = l.league_id
                             order by league_name, team_name''',
-                    dictResults=True)
+                 dictResults=True)
 
 
 def get_fields() -> []:
     return query(statement='''select field_name, field_id
                             from field
                             order by field_name''',
-                    dictResults=True)
+                 dictResults=True)
 
 
 def load_game(game_id) -> {}:
     return query_one(statement='''select game_id, home_team_id, away_team_id, field_id, 
-                                    DATE_FORMAT(game_dt, '%%Y-%%m-%%d') as game_date,                                                                  DATE_FORMAT(game_dt, '%%l:%%i %%p') as game_time,
+                                    DATE_FORMAT(game_dt, '%%Y-%%m-%%d') as game_date,
+                                    DATE_FORMAT(game_dt, '%%l:%%i %%p') as game_time,
                                     home_score, away_score 
                                     from game 
                                     where game_id = %s''',
                      vars=(game_id),
                      dictResults=True)
 
+
 def modify_game(game_id, home_team_id, away_team_id, field_id, game_dt, game_time, home_score, away_score):
     dt_time = game_dt + " " + game_time
 
-    update(statement='''UPDATE game 
+    execute(statement='''UPDATE game 
                         set home_team_id = %s, 
                         away_team_id = %s, 
                         field_id = %s, 
@@ -36,19 +38,20 @@ def modify_game(game_id, home_team_id, away_team_id, field_id, game_dt, game_tim
                         home_score = %s, 
                         away_score = %s
                         where game_id = %s''',
-           vars=(home_team_id, away_team_id, field_id, dt_time, home_score, away_score, game_id))
-
+            vars=(home_team_id, away_team_id, field_id, dt_time, home_score, away_score, game_id))
 
 
 def add_game(home_team_id, away_team_id, field_id, game_dt, game_time, home_score, away_score):
     dt_time = game_dt + " " + game_time
 
-    insert(statement='''INSERT INTO game (home_team_id, away_team_id, field_id, game_dt, home_score, away_score) 
-           VALUES (%s, %s, %s, %s, %s, %s)''',
-           vars=(home_team_id, away_team_id, field_id, dt_time, home_score, away_score))
+    execute(statement='''INSERT INTO game (home_team_id, away_team_id, field_id, game_dt, home_score, away_score) 
+                         VALUES (%s, %s, %s, %s, %s, %s)''',
+            vars=(home_team_id, away_team_id, field_id, dt_time, home_score, away_score))
+
 
 def delete_game(game_id):
-    delete(statement='delete from game where game_id = %s', vars=(game_id))
+    execute(statement='delete from game where game_id = %s', vars=(game_id))
+
 
 def get_schedule_data(sunday_date) -> []:
     return query(statement='''select home.name as home_team_name, away.name as away_team_name, 
@@ -65,6 +68,6 @@ def get_schedule_data(sunday_date) -> []:
                         and g.game_dt >= %s
                         and g.game_dt < DATE_ADD(%s, INTERVAL 7 DAY)
                         order by league_name, game_dt, field_name''',
-                    vars=[sunday_date,sunday_date],
-                    dictResults=True)
+                 vars=[sunday_date,sunday_date],
+                 dictResults=True)
 

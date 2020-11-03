@@ -15,13 +15,13 @@ def query(db=Config.MYSQL_DATABASE_DB, statement="required", vars="", dictResult
     cur = get_connection().cursor()
     use_db(cur, db)
 
+    if Config.SHOW_QUERIES:
+        log_print("QUERY", db, statement, vars)
+
     if vars:
         cur.execute(statement, vars)
     else:
         cur.execute(statement)
-
-    if Config.SHOW_QUERIES:
-        log_print("QUERY", db, statement, vars)
 
     result = cur.fetchall()
     cur.connection.commit()
@@ -40,67 +40,62 @@ def query_one(db=Config.MYSQL_DATABASE_DB, statement="required", vars="", dictRe
     cur = get_connection().cursor()
     use_db(cur, db)
 
+    if Config.SHOW_QUERIES:
+        log_print("QUERY", db, statement, vars)
+
     if vars:
         cur.execute(statement, vars)
     else:
         cur.execute(statement)
 
-    if Config.SHOW_QUERIES:
-        log_print("QUERY", db, statement, vars)
     return cur.fetchone()
 
 
-def insert(db=Config.MYSQL_DATABASE_DB, statement="required", vars=None):
+def execute(db=Config.MYSQL_DATABASE_DB, statement="required", vars=None):
     cur = mysql.get_db().cursor()
     use_db(cur, db)
+
+    if Config.SHOW_QUERIES:
+        log_print("EXECUTE", db, statement, vars)
 
     cur.execute(statement, vars)
 
     cur.connection.commit()
 
-    if Config.SHOW_QUERIES:
-        log_print("INSERT", db, statement, vars)
 
-def insertmany(db=Config.MYSQL_DATABASE_DB, statement="required", data=None):
+def executemany(db=Config.MYSQL_DATABASE_DB, statement="required", data=None):
     cur = mysql.get_db().cursor()
     use_db(cur, db)
+
+    if Config.SHOW_QUERIES:
+        log_print("EXECUTE_MANY", db, statement, data)
 
     cur.executemany(statement, data)
 
     cur.connection.commit()
 
-    if Config.SHOW_QUERIES:
-        log_print("INSERT", db, statement, data)
+
+# Deprecated
+def insertmany(db=Config.MYSQL_DATABASE_DB, statement="required", vars=None):
+    print("Deprecated -- use execute instead of insert")
+    executemany(db, statement, vars)
 
 
-def update(db=Config.MYSQL_DATABASE_DB, statement="required", vars=""):
-    cur = mysql.get_db().cursor()
-    use_db(cur, db)
-
-    if Config.SHOW_QUERIES:
-        log_print("UPDATE", db, statement, vars)
-
-    if vars:
-        cur.execute(statement, vars)
-    else:
-        cur.execute(statement)
-
-    cur.connection.commit()
+# Deprecated
+def insert(db=Config.MYSQL_DATABASE_DB, statement="required", vars=None):
+    print("Deprecated -- use execute instead of insert")
+    execute(db, statement, vars)
 
 
-def delete(db=Config.MYSQL_DATABASE_DB, statement="required", vars=""):
-    cur = mysql.get_db().cursor()
-    use_db(cur, db)
+# Deprecated
+def update(db=Config.MYSQL_DATABASE_DB, statement="required", vars=None):
+    print("Deprecated -- use execute instead of insert")
+    execute(db, statement, vars)
 
-    if Config.SHOW_QUERIES:
-        log_print("DELETE", db, statement, vars)
 
-    if vars:
-        cur.execute(statement, vars)
-    else:
-        cur.execute(statement)
-
-    cur.connection.commit()
+def delete(db=Config.MYSQL_DATABASE_DB, statement="required", vars=None):
+    print("Deprecated -- use execute instead of insert")
+    execute(db, statement, vars)
 
 
 def get_connection():
@@ -112,10 +107,12 @@ def get_connection():
         connect_timeout=5,
         cursorclass=pymysql.cursors.DictCursor)
 
+
 def use_db(cur, db, display=False):
     if display:
         print("Using db, %s" % db)
     cur.execute('USE ' + str(db))
+
 
 def log_print(operation, db, statement, values):
     print("%s @ %s: '%s', %s " % (operation, db, statement, values))

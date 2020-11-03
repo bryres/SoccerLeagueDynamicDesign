@@ -1,4 +1,4 @@
-from app.db import insert, insertmany, query_one, query, delete, update
+from app.db import query_one, query
 
 def get_league_rankings():
     return query(statement='''select l.league_name, l.league_id, t.team_id, t.name as team_name, 
