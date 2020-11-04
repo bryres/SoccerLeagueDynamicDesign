@@ -60,8 +60,8 @@ def show_schedule_page():
     # get date from query string.  If no value, pull from session (last time on this page).
     # If this is the first time the page is loading, default to today.
     start_date = request.args.get('start_date',
-                                session.get('start_date',
-                                    datetime.date(datetime.now())))
+                                  session.get('start_date',
+                                              datetime.date(datetime.now())))
 
     # if the date was a "get" argument, convert it to a date object.
     if isinstance(start_date, str):
