@@ -74,7 +74,10 @@ def show_schedule_page():
     prior_week = (start_date - timedelta(days=7)).strftime("%Y-%m-%d")
     next_week = (start_date + timedelta(days=7)).strftime("%Y-%m-%d")
 
-    session['start_date'] = start_date
+    # Converting the date to a string and assigning to the session.
+    # Without the explicit conversion to a string, it wasn't working for some students.  It seemed to be
+    # auto-converting to a string, but in a different format.
+    session['start_date'] = start_date.strftime("%Y-%m-%d")
 
     return render_template("schedule/schedule.html", schedule_data=schedule_data, date_range=date_range_str, prior_week=prior_week, next_week=next_week)
 
