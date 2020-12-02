@@ -9,7 +9,42 @@
 
 {% block content %}
 <div class="container">
-    <h3>Playing Minutes</h3>
+    <h3>Playing Minutes <a style="float:right" class="waves-effect waves-light btn modal-trigger" href="#addplayermodal">Add Player</a></h3>
+
+  <div id="addplayermodal" class="modal">
+    <div class="modal-content">
+        <div class="container">
+            <h4>Add New Player</h4>
+            <form>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input id="first_name" name="first_name" type="text">
+                        <label for="first_name">First Name</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="last_name" name="last_name" type="text">
+                        <label for="last_name">Last Name</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s6">
+                        <select id="team_id" name="team_id">
+                            {% for team in teams %}
+                                <option value="{{ team.team_id }}">{{team.team_name}}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="team_id">Team</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <a onclick="add_player()" href="#" class="modal-close waves-effect waves-green btn-flat">Add Player</a>
+    </div>
+  </div>
+
     <table>
         <thead>
         <tr>
@@ -46,10 +81,9 @@
         {% endfor %}
 
         $(document).ready(function(){
-            $("input").on('change', function postinput(){
+            $("input[name='player_minutes']").on('change', function postinput(){
                 var minutes = $(this).val(); // this.value
                 var player_id = $(this).attr("id").substring(1);
-                console.log("Sending.");
                 $.ajax({
                     url: 'player_minutes',
                     data: { minutes: minutes, player_id: player_id, game_id:{{ game_id }} },
@@ -62,25 +96,36 @@
             });
         });
 
-/*
-        function attendance(usr_id, event_id, attendance) {
-            var present = attendance ? 1 : 0;
-            var url = 'index.php?usr_id='+ usr_id + '&attendance=' + present + '&action=attendance&event_id=' + event_id;
-            var request = new XMLHttpRequest();
-            request.open('GET', url, true);
-            request.send();
+        function add_player() {
+            team_id = document.getElementById("team_id").value;
+            last_name = document.getElementById("last_name").value;
+            first_name = document.getElementById("first_name").value;
+
+            $.ajax({
+                    url: 'ajax_add_player',
+                    data: { team_id: team_id, last_name: last_name, first_name: first_name },
+                    type: 'get'
+                }).done(function(responseData) {
+                    var player = JSON.parse(responseData);
+                    player_id = player.player_id;
+                    team_name = player.team_name;
+                    player_name = player.player_name;
+                    $("tbody").prepend("<tr>" +
+                        "<td>"+team_name+"</td>" +
+                        "<td>"+player_name+"</td>" +
+                        "<td><input id='p"+player_id+"' name='player_minutes' type='number'></td>" +
+                        "</tr>");
+
+                    // Clear the modal values
+                    team_id = document.getElementById("team_id").value = '';
+                    last_name = document.getElementById("last_name").value = '';
+                    first_name = document.getElementById("first_name").value = '';
+
+                }).fail(function() {
+                    M.toast({html: 'Player add failed.'});
+                });
+
+
         }
-        sel.on("change", function() {
-            var id = $(this).val();
-            var team = id.substring(0, 1);
-            var team_id = id.substring(1);
-            var event_id = <?php echo $event_specs['event_id']?>;
-            var url = 'index.php?event_id=' + event_id + '&'+team+ '=' + team_id + '&action=score';
-            var request = new XMLHttpRequest();
-            request.open('GET', url, true);
-            request.send();
-        });*/
-
-
     </script>
 {%  endblock %}

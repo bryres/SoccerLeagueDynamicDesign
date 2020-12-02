@@ -83,6 +83,15 @@ def get_players_for_game(game_id) -> []:
                  vars=(game_id),
                  dictResults=True)
 
+def get_teams_for_game(game_id) -> []:
+    return query(statement='''select t.name as team_name, team_id
+                            from game g, team t
+                            where (g.home_team_id = t.team_id or g.away_team_id = t.team_id)
+                            and g.game_id = %s  
+                            order by team_name''',
+                 vars=(game_id),
+                 dictResults=True)
+
 
 def add_update_player_minutes(game_id, player_id, minutes):
     execute(statement=
@@ -90,3 +99,16 @@ def add_update_player_minutes(game_id, player_id, minutes):
             VALUES(%s, %s, %s)
             ON DUPLICATE KEY UPDATE
             minutes_played = %s''', vars=(game_id, player_id, minutes, minutes))
+
+def add_player(team_id, last_name, first_name):
+    return execute(statement='''INSERT INTO player (team_id, last_name, first_name) 
+                                 VALUES (%s, %s, %s)''',
+               vars=(team_id, last_name, first_name))
+
+def get_player(player_id) -> {}:
+    return query_one(statement='''select player_id, t.name as team_name, CONCAT(p.last_name, ', ', p.first_name) as player_name 
+                                    from player p, team t 
+                                    where p.team_id = t.team_id
+                                    and p.player_id = %s''',
+                     vars=(player_id),
+                     dictResults=True)

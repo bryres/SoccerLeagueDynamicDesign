@@ -59,8 +59,9 @@ def execute(db=Config.MYSQL_DATABASE_DB, statement="required", vars=None):
         log_print("EXECUTE", db, statement, vars)
 
     cur.execute(statement, vars)
-
     cur.connection.commit()
+
+    return cur.lastrowid
 
 
 def executemany(db=Config.MYSQL_DATABASE_DB, statement="required", data=None):

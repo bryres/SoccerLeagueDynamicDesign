@@ -86,7 +86,8 @@ def show_schedule_page():
 def show_playing_time():
     game_id = request.args['game_id']
 
-    return render_template("schedule/player_time.html", game_id=game_id, players=get_players_for_game(game_id))
+
+    return render_template("schedule/player_time.html", game_id=game_id, players=get_players_for_game(game_id), teams=get_teams_for_game(game_id))
 
 
 @public_mod.route('/player_minutes')
@@ -100,6 +101,20 @@ def ajax_player_minutes():
 
     add_update_player_minutes(game_id, player_id, minutes)
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@public_mod.route('/ajax_add_player')
+def ajax_add_player():
+    team_id = request.args['team_id']
+    last_name = request.args['last_name']
+    first_name = request.args['first_name']
+
+    player_id = add_player(team_id, last_name, first_name)
+    player = get_player(player_id)
+
+    return json.dumps({'player_id': player_id,
+                       'team_name': player['team_name'],
+                       'player_name': player['player_name']}), 200, {'ContentType': 'application/json'}
 
 
 def shift_date_back_to_saturday (start_date : date) -> date:
