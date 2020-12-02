@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Player Time{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/jquery-3.5.1.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3>Playing Minutes</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Team</th>
+            <th>Player</th>
+            <th>Minutes Played</th>
+        </tr>
+        </thead>
+
+        <tbody>
+            {% for player in players %}
+                <tr>
+                    <td>{{player.team_name}}</td>
+                    <td>{{player.player_name}}</td>
+                    <td><input id="p{{player.player_id}}" name="player_minutes" type="number"></td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+    {{ super() }}
+
+    <script>
+        {% for player in players %}
+
+            {%  if player.minutes_played is not none and player.minutes_played != 0 %}
+                document.getElementById("p{{player.player_id}}").value = {{player.minutes_played}};
+            {%  endif %}
+        {% endfor %}
+
+        $(document).ready(function(){
+            $("input").on('change', function postinput(){
+                var minutes = $(this).val(); // this.value
+                var player_id = $(this).attr("id").substring(1);
+                console.log("Sending.");
+                $.ajax({
+                    url: 'player_minutes',
+                    data: { minutes: minutes, player_id: player_id, game_id:{{ game_id }} },
+                    type: 'get'
+                }).done(function(responseData) {
+                    M.toast({html: 'Updated!'});
+                }).fail(function() {
+                    M.toast({html: 'Failed!'});
+                });
+            });
+        });
+
+/*
+        function attendance(usr_id, event_id, attendance) {
+            var present = attendance ? 1 : 0;
+            var url = 'index.php?usr_id='+ usr_id + '&attendance=' + present + '&action=attendance&event_id=' + event_id;
+            var request = new XMLHttpRequest();
+            request.open('GET', url, true);
+            request.send();
+        }
+        sel.on("change", function() {
+            var id = $(this).val();
+            var team = id.substring(0, 1);
+            var team_id = id.substring(1);
+            var event_id = <?php echo $event_specs['event_id']?>;
+            var url = 'index.php?event_id=' + event_id + '&'+team+ '=' + team_id + '&action=score';
+            var request = new XMLHttpRequest();
+            request.open('GET', url, true);
+            request.send();
+        });*/
+
+
+    </script>
+{%  endblock %}

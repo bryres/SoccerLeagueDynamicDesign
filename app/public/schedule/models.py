@@ -71,3 +71,22 @@ def get_schedule_data(sunday_date) -> []:
                  vars=[sunday_date,sunday_date],
                  dictResults=True)
 
+
+def get_players_for_game(game_id) -> []:
+    return query(statement='''select t.name as team_name, CONCAT(p.last_name, ', ', p.first_name) as player_name, minutes_played, p.player_id, g.game_id
+                            from game g, team t, player p
+                            left join player_game_time pgt on p.player_id = pgt.player_id
+                            where (g.home_team_id = t.team_id or g.away_team_id = t.team_id)
+                            and t.team_id = p.team_id
+                            and g.game_id = %s  
+                            order by team_name, player_name''',
+                 vars=(game_id),
+                 dictResults=True)
+
+
+def add_update_player_minutes(game_id, player_id, minutes):
+    execute(statement=
+            '''INSERT INTO player_game_time(game_id, player_id, minutes_played)
+            VALUES(%s, %s, %s)
+            ON DUPLICATE KEY UPDATE
+            minutes_played = %s''', vars=(game_id, player_id, minutes, minutes))

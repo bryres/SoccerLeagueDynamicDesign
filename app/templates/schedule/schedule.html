@@ -35,9 +35,10 @@
                             {{game.home_score}}-{{game.away_score}}
                         {% endif %}
                     </td>
-                    <td>
+                    <td nowrap>
                         <a href="./game_modify?game_id={{ game.game_id }}"><i class="material-icons">edit</i></a>
                         <a href="./game_delete?game_id={{ game.game_id }}"><i class="material-icons">delete</i></a>
+                        <a href="./playing_time?game_id={{ game.game_id }}"><i class="material-icons">person</i></a>
                     </td>
                 </tr>
             {% endfor %}

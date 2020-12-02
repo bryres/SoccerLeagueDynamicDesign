@@ -4,7 +4,7 @@ from flask import render_template, request, redirect, url_for, session
 
 from app.public import public_mod
 from app.public.schedule.models import *
-
+import json
 
 @public_mod.route('/game_add', methods=['GET', 'POST'])
 @public_mod.route('/game_modify', methods=['GET', 'POST'])
@@ -80,6 +80,26 @@ def show_schedule_page():
     session['start_date'] = start_date.strftime("%Y-%m-%d")
 
     return render_template("schedule/schedule.html", schedule_data=schedule_data, date_range=date_range_str, prior_week=prior_week, next_week=next_week)
+
+
+@public_mod.route('/playing_time')
+def show_playing_time():
+    game_id = request.args['game_id']
+
+    return render_template("schedule/player_time.html", game_id=game_id, players=get_players_for_game(game_id))
+
+
+@public_mod.route('/player_minutes')
+def ajax_player_minutes():
+    game_id = request.args['game_id']
+    player_id = request.args['player_id']
+    minutes = request.args['minutes']
+
+    if len(minutes) == 0:
+        minutes = 0
+
+    add_update_player_minutes(game_id, player_id, minutes)
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
 def shift_date_back_to_saturday (start_date : date) -> date:
