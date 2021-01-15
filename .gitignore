@@ -1,4 +1,11 @@
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
 config.py
+
+*.code-workspace
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
