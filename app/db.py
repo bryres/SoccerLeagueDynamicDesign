@@ -76,29 +76,6 @@ def executemany(db=Config.MYSQL_DATABASE_DB, statement="required", data=None):
     cur.connection.commit()
 
 
-# Deprecated
-def insertmany(db=Config.MYSQL_DATABASE_DB, statement="required", vars=None):
-    print("Deprecated -- use execute instead of insert")
-    executemany(db, statement, vars)
-
-
-# Deprecated
-def insert(db=Config.MYSQL_DATABASE_DB, statement="required", vars=None):
-    print("Deprecated -- use execute instead of insert")
-    execute(db, statement, vars)
-
-
-# Deprecated
-def update(db=Config.MYSQL_DATABASE_DB, statement="required", vars=None):
-    print("Deprecated -- use execute instead of insert")
-    execute(db, statement, vars)
-
-
-def delete(db=Config.MYSQL_DATABASE_DB, statement="required", vars=None):
-    print("Deprecated -- use execute instead of insert")
-    execute(db, statement, vars)
-
-
 def get_connection():
     return pymysql.connect(
         host=Config.MYSQL_DATABASE_HOST,

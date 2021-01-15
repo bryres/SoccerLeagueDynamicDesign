@@ -15,7 +15,8 @@ handler.setLevel(logging.INFO)
 
 application = Flask(__name__, static_url_path='/static')
 application.config.from_object(Config)
-application.secret_key = 'soccerSoccersoccer'
+application.secret_key = Config.SECRET_KEY
+application.debug = Config.DEBUG
 
 mysql = MySQL(application)
 

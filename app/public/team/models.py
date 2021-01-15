@@ -1,4 +1,4 @@
-from app.db import insert, insertmany, query_one, query, delete, update
+from app.db import query_one, query
 
 def get_team_info(team_id):
     return query_one(statement='''select league_name, name as team_name, coach_first_name, coach_last_name, 
